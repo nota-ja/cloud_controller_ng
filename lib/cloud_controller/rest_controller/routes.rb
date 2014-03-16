@@ -18,6 +18,7 @@ module VCAP::CloudController::RestController
             blk.yield(api, *args)
           end
         end
+        puts "Defined route: '#{verb}' '#{path}' -> '#{klass}': '#{method.to_s}' / {#{blk.to_s}}"
       end
 
       [:post, :get, :put, :delete].each do |verb|
