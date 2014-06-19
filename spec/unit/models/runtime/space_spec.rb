@@ -336,6 +336,16 @@ module VCAP::CloudController
         expect(eager_space.app_security_groups).to match_array [associated_asg, default_asg, another_default_asg]
       end
     end
+
+    describe "#validate" do
+      [";semicolon", "semi;colon", "semicolon;"].each do |space_name|
+        it "should detect name format error for space name with semicolon '#{space_name}'" do
+          space = Space.new(:name => space_name)
+          space.validate
+          expect(space.errors[:name]).to include(:format)
+        end
+      end
+    end
   end
 
   describe "#having_developer" do

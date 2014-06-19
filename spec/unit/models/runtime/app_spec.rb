@@ -1768,6 +1768,16 @@ module VCAP::CloudController
         expect { app.save }.to raise_error(Errors::ApplicationMissing)
       end
     end
+
+    describe "#validate" do
+      [";semicolon", "semi;colon", "semicolon;"].each do |app_name|
+        it "should detect name format error for app name with semicolon '#{app_name}'" do
+          app = App.new(:name => app_name)
+          app.validate
+          expect(app.errors[:name]).to include(:format)
+        end
+      end
+    end
   end
 
   describe "default disk_quota" do

@@ -522,5 +522,15 @@ module VCAP::CloudController
         end
       end
     end
+
+    describe "#validate" do
+      [";semicolon", "semi;colon", "semicolon;"].each do |app_security_group_name|
+        it "should detect name format error for app security group name with semicolon '#{app_security_group_name}'" do
+          app_security_group = AppSecurityGroup.new(:name => app_security_group_name)
+          app_security_group.validate
+          expect(app_security_group.errors[:name]).to include(:format)
+        end
+      end
+    end
   end
 end

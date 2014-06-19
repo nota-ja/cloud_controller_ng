@@ -452,5 +452,15 @@ module VCAP::CloudController
         end
       end
     end
+
+    describe "#validate" do
+      [";semicolon", "semi;colon", "semicolon;"].each do |organization_name|
+        it "should detect name format error for organization name with semicolon '#{organization_name}'" do
+          organization = Organization.new(:name => organization_name)
+          organization.validate
+          expect(organization.errors[:name]).to include(:format)
+        end
+      end
+    end
   end
 end
